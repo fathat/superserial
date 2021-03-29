@@ -1,6 +1,7 @@
-import { app, BrowserWindow, screen } from 'electron';
+import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
+import * as serialport from 'serialport';
 
 // Initialize remote module
 require('@electron/remote/main').initialize();
@@ -8,6 +9,13 @@ require('@electron/remote/main').initialize();
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
+
+ipcMain.on('list-serial-ports', (event, ...args: any[]) => {
+  serialport.list().then((portInfo: serialport.PortInfo[]) => {
+    console.log('serial ports', portInfo);
+    event.reply('render-update-serial-ports', portInfo);
+  });
+});
 
 function createWindow(): BrowserWindow {
 
