@@ -1,7 +1,25 @@
-<div class="container">
-<h1 class="title">
-    {{ 'PAGES.PORT_LIST.TITLE' | translate }}
-</h1>
-
-<a routerLink="/">{{ 'PAGES.PORT_LIST.BACK_TO_HOME' | translate }}</a>
-</div>
+<table>
+    <thead>
+        <tr>
+            <th>path</th>
+            <th>manufacturer</th>
+            <th>vendor id</th>
+            <th>product id</th>
+            <th>serial number</th>
+            <th>pnp id</th>
+            <th>location id</th>
+        </tr>
+    </thead>
+    <tbody *ngFor="let sp of portInfo">
+        <tr>
+            <td>{{sp.path}}</td>
+            <td>{{sp.manufacturer}}</td>
+            <td>{{sp.vendorId}}</td>
+            <td>{{sp.productId}}</td>
+            <td>{{sp.serialNumber}}</td>
+            <td>{{sp.pnpId}}</td>
+            <td>{{sp.locationId}}</td>
+        </tr>
+    </tbody>
+</table>
+<button (click)="onRefresh()">Refresh</button>
