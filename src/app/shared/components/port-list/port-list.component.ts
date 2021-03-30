@@ -1,10 +1,10 @@
 import { Component, OnChanges, OnInit, AfterViewInit, SimpleChanges } from '@angular/core';
 import { PortInfo } from "serialport";
-import { ElectronService } from '../core/services';
-import { SerialPortService } from '../core/services/serial-port/serial-port.service';
+import { ElectronService } from '../../../core/services';
+import { SerialPortService } from '../../../core/services/serial-port/serial-port.service';
 
 @Component({
-  selector: 'app-port-list',
+  selector: 'ss-port-list',
   templateUrl: './port-list.component.html',
   styleUrls: ['./port-list.component.scss'],
   providers: [ ElectronService, SerialPortService ]
