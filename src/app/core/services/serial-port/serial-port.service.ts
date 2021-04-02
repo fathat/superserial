@@ -10,12 +10,11 @@ export class SerialPortService {
 
   async serialPortList(): Promise<PortInfo[]> {
     const promise = new Promise<PortInfo[]>((resolve, reject) => {
-      this.electronService.ipcRenderer.on('render-update-serial-ports', (event, ports: PortInfo[]) => {
-        console.log('port list received');
+      this.electronService.ipcRenderer.once('render-update-serial-ports', (event, ports: PortInfo[]) => {
         resolve(ports);
       });
+      this.electronService.ipcRenderer.send('list-serial-ports');
     });
-    this.electronService.ipcRenderer.send('list-serial-ports');
     return promise;
   }
 }

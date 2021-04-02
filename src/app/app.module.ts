@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
@@ -18,6 +19,10 @@ import { AppComponent } from './app.component';
 
 import * as PlotlyJS from 'plotly.js/dist/plotly.js';
 import { PlotlyModule } from 'angular-plotly.js';
+import { WatchModule } from './watch/watch.module';
+
+import {MatSidenavModule} from '@angular/material/sidenav';
+
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -29,6 +34,7 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    BrowserAnimationsModule,
     PlotlyModule,
     BrowserModule,
     FormsModule,
@@ -37,7 +43,9 @@ export function HttpLoaderFactory(http: HttpClient): TranslateHttpLoader {
     SharedModule,
     HomeModule,
     DetailModule,
+    WatchModule,
     AppRoutingModule,
+    MatSidenavModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

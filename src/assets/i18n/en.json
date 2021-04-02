@@ -1,7 +1,7 @@
 {
   "PAGES": {
     "HOME": {
-        "TITLE": "App works !",
+        "TITLE": "Serial Ports",
         "GO_TO_DETAIL": "Go to Detail",
         "GO_TO_PORT_LIST": "Go to Port List"
     },

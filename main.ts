@@ -11,10 +11,12 @@ const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
 ipcMain.on('list-serial-ports', (event, ...args: any[]) => {
-  serialport.list().then((portInfo: serialport.PortInfo[]) => {
-    console.log('serial ports', portInfo);
+  const promise = serialport.list();
+  
+  promise.then((portInfo: serialport.PortInfo[]) => {
     event.reply('render-update-serial-ports', portInfo);
   });
+  
 });
 
 function createWindow(): BrowserWindow {
