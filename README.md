@@ -1,7 +1,11 @@
 
 # Introduction
 
-A serial port monitor intended for arduino projects with enhanced capabilities. 
+![Al Gore](al-gore.png)
+
+A serial port monitor intended for arduino projects with enhanced capabilities.
+
+Nobody should take this project cereal.
 
 # Developers
 
