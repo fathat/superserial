@@ -1,19 +1,24 @@
+<mat-toolbar color="primary">
+  <span>Serial Ports</span>
+  <span class="spacer"></span>
+  <!--<mat-checkbox color="accent" [(ngModel)]="hideEmpty">Hide Empty</mat-checkbox>-->
+  <button mat-icon-button (click)="onRefresh()">
+    <mat-icon>refresh</mat-icon>
+  </button>
+</mat-toolbar>
 <mat-menu #serialPortMenu="matMenu">
     <ng-template matMenuContent let-path="path">
         <button *ngFor="let baud of baudRates" (click)="onClick(path, baud)" mat-menu-item>
             Open @ {{baud}} baud
-        </button>        
+        </button>
     </ng-template>
 </mat-menu>
 
-<button mat-raised-button color="primary" (click)="onRefresh()">Refresh</button>
-<mat-checkbox color="primary" [(ngModel)]="hideEmpty">Hide Empty</mat-checkbox>
-
-<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">
+<table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8 serial-port-table">
     <ng-container matColumnDef="path">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Path</th>
         <td mat-cell *matCellDef="let sp">
-            <button mat-stroked-button [matMenuTriggerFor]="serialPortMenu" [matMenuTriggerData]="{path: sp.path}" >{{sp.path}}</button>
+            <button color="primary" mat-raised-button [matMenuTriggerFor]="serialPortMenu" [matMenuTriggerData]="{path: sp.path}" >{{sp.path}}</button>
         </td>
     </ng-container>
     <ng-container matColumnDef="pnpId">
