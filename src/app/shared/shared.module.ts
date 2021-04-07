@@ -16,6 +16,8 @@ import {MatSortModule} from '@angular/material/sort';
 import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
+import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 
 @NgModule({
   declarations: [PageNotFoundComponent, WebviewDirective, PortListComponent, PlotlyExampleComponent],
@@ -24,12 +26,14 @@ import {MatIconModule} from "@angular/material/icon";
     TranslateModule,
     FormsModule,
     PlotlyModule,
+    MatSelectModule,
     MatTableModule,
     MatSortModule,
     MatMenuModule,
     MatButtonModule,
     MatCheckboxModule,
-    MatIconModule
+    MatIconModule,
+    MatTabsModule
   ],
   exports: [
     TranslateModule,
@@ -39,6 +43,8 @@ import {MatIconModule} from "@angular/material/icon";
     MatMenuModule,
     MatSortModule,
     MatIconModule,
+    MatSelectModule,
+    MatTabsModule,
     WebviewDirective,
     FormsModule,
     PortListComponent,

@@ -7,6 +7,7 @@ import { ElectronService } from '../../../core/services';
 import { SerialPortService } from '../../../core/services/serial-port/serial-port.service';
 import { MatMenuTrigger } from "@angular/material/menu";
 import { Router } from "@angular/router";
+import { baudRates } from '../../../constants';
 
 @Component({
   selector: 'ss-port-list',
@@ -32,19 +33,7 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
   }
 
   displayedColumns = ['path', 'manufacturer', 'pnpId', 'vendorId', 'productId', 'serialNumber'];
-  baudRates = [
-    9600,
-    19200,
-    38400,
-    57600,
-    74880,
-    115200,
-    230400,
-    250000,
-    500000,
-    1000000,
-    2000000
-  ];
+  baudRates = baudRates;
 
   constructor(
     private serialPortService: SerialPortService,

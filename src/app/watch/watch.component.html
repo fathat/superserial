@@ -1,10 +1,31 @@
 <mat-toolbar color="primary">
   <button mat-icon-button (click)="onHome()">
     <mat-icon>home</mat-icon>
-  </button>
-  <span class="spacer"></span>
+  </button>  
   <span>{{this.path}}</span>
+
+  <span class="fixed-spacer"></span> 
+  <button *ngIf="connected === false" mat-raised-button (click)="onConnect()">connect</button>
+  <button *ngIf="connected === true" mat-raised-button (click)="onDisconnect()">disconnect</button>
+  <span class="fixed-spacer"></span> 
+  <mat-select #baudRateSelect [compareWith]="compareBaudRates" [(ngModel)]="baudRate" class="baud-rate-select">
+    <mat-option *ngFor="let baud of baudRates" [value]="baud">
+      {{baud}}
+    </mat-option>
+  </mat-select>
+  <span class="spacer"></span>
+  <mat-icon>refresh</mat-icon>
 </mat-toolbar>
 
-
+<mat-tab-group>
+  <mat-tab label="text">
+    <pre #serialPortMessages>I am serial #serialPortMessages
+Yay
+    </pre>    
+  </mat-tab>
+  <mat-tab label="hex"></mat-tab>
+  <mat-tab label="graph"></mat-tab>
+  <mat-tab label="watch"></mat-tab>
+  <mat-tab label="combined"></mat-tab>
+</mat-tab-group>
 
