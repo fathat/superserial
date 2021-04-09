@@ -5,8 +5,9 @@
   <span>{{this.path}}</span>
 
   <span class="fixed-spacer"></span> 
-  <button *ngIf="connected === false" mat-raised-button (click)="onConnect()">connect</button>
-  <button *ngIf="connected === true" mat-raised-button (click)="onDisconnect()">disconnect</button>
+  <button *ngIf="state === 'disconnected'" mat-raised-button (click)="onConnect()">connect</button>
+  <button *ngIf="state === 'connecting'" mat-button disabled>connecting..</button>
+  <button *ngIf="state === 'connected'" mat-raised-button (click)="onDisconnect()">disconnect</button>
   <span class="fixed-spacer"></span> 
   <mat-select #baudRateSelect [compareWith]="compareBaudRates" [(ngModel)]="baudRate" class="baud-rate-select">
     <mat-option *ngFor="let baud of baudRates" [value]="baud">

@@ -1,7 +1,9 @@
 import { app, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-import * as serialport from 'serialport';
+import * as SerialPort from 'serialport';
+import {PortInfo} from "serialport";
+
 
 // Initialize remote module
 require('@electron/remote/main').initialize();
@@ -10,14 +12,55 @@ let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
 
-ipcMain.on('list-serial-ports', (event, ...args: any[]) => {
-  const promise = serialport.list();
-  
-  promise.then((portInfo: serialport.PortInfo[]) => {
-    event.reply('render-update-serial-ports', portInfo);
+let activeSerialPort: SerialPort | null = null;
+
+ipcMain.on('listing', (event, ...args: any[]) => {
+  SerialPort.list().then((portInfo: SerialPort.PortInfo[]) => {
+    event.reply('listing', portInfo);
   });
-  
 });
+
+ipcMain.on('port', (event, path: string, options: SerialPort.OpenOptions) => {
+  if(activeSerialPort) {
+    if(activeSerialPort.isOpen) {
+      activeSerialPort.close((err) => {
+        if(err) {
+          event.reply('port', 'error', err);
+        } else {
+          event.reply('port', 'close');
+        }
+      });
+    }
+    activeSerialPort = null;
+  }
+
+  console.log("port", path, options);
+  console.log("options");
+  console.log(options);
+  console.log("!");
+  
+  activeSerialPort = new SerialPort(path, options, (error) => {
+    if(error) {
+      event.reply('port', 'error', error);
+    } else {
+      event.reply('port', 'open');
+    }
+  });
+
+  activeSerialPort.on('data', (data) => {
+    ipcMain.emit('port', 'data', data);
+  });
+
+  activeSerialPort.on('close', () => {
+    ipcMain.emit('port', 'close');
+  });
+
+  activeSerialPort.on('error', (err) => {
+    ipcMain.emit('port', 'error', err);
+  });
+});
+
+
 
 function createWindow(): BrowserWindow {
 

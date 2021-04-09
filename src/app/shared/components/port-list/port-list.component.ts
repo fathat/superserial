@@ -7,7 +7,7 @@ import { ElectronService } from '../../../core/services';
 import { SerialPortService } from '../../../core/services/serial-port/serial-port.service';
 import { MatMenuTrigger } from "@angular/material/menu";
 import { Router } from "@angular/router";
-import { baudRates } from '../../../constants';
+import { baudRates, dataBitOptions, parityOptions } from '../../../constants';
 
 @Component({
   selector: 'ss-port-list',
@@ -23,7 +23,7 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
   dataSource = new MatTableDataSource([] as PortInfo[]);
   portInfo: PortInfo[];
 
-  _hideEmpty = true;
+  _hideEmpty = false;
   get hideEmpty(): boolean {
     return this._hideEmpty;
   }
@@ -32,8 +32,19 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
     this.onRefresh();
   }
 
-  displayedColumns = ['path', 'manufacturer', 'pnpId', 'vendorId', 'productId', 'serialNumber'];
+  displayedColumns = [
+    'path', 
+    'manufacturer', 
+    'pnpId', 
+    'vendorId', 
+    'productId', 
+    'serialNumber'
+  ];
+  
   baudRates = baudRates;
+  dataBitOptions = dataBitOptions;
+  parityOptions = parityOptions;
+
 
   constructor(
     private serialPortService: SerialPortService,
