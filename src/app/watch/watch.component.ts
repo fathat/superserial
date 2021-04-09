@@ -12,7 +12,7 @@ export type ConnectionState = 'disconnected' | 'connecting' | 'connected';
   templateUrl: './watch.component.html',
   styleUrls: ['./watch.component.scss']
 })
-export class WatchComponent implements OnInit, AfterViewInit, SerialPortWatcher {
+export class WatchComponent implements OnInit, SerialPortWatcher {
 
   path = "";
   baudRate = 9600;
@@ -37,20 +37,9 @@ export class WatchComponent implements OnInit, AfterViewInit, SerialPortWatcher 
     throw new Error('Method not implemented.');
   }
 
-  ngAfterViewInit(): void {
-    this.baudRateSelect.value = `${this.baudRate}`;
-  }
-
   ngOnInit(): void {
     this.path = this.route.snapshot.queryParams['path'];
     this.baudRate = +this.route.snapshot.queryParams['baud'];
-
-    this.route.queryParams.subscribe(params => {
-      this.path = params['path'];
-      this.baudRate = +params['baud'];
-      this.onConnect();
-    });
-
   }
 
   onConnect(): void {

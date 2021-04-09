@@ -23,7 +23,7 @@ export class SerialPortService {
   }
 
   connect(path: string, options: OpenOptions, watcher: SerialPortWatcher): Promise<Error | null> {
-    console.log("connecting... ", path);
+    console.log("connecting... ", path, options);
     return new Promise<Error | null>((resolve, reject) => {
       this.electronService.ipcRenderer.once('port', (event, msg, ...args: any[]) => {
         switch(msg) {
@@ -40,7 +40,7 @@ export class SerialPortService {
             console.assert('unreachable case detected')
         }
       });
-      this.electronService.ipcRenderer.send('port', 'connect', path, options);
+      this.electronService.ipcRenderer.send('port', 'open', path, options);
     });
   }
 

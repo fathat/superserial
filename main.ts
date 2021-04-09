@@ -3,6 +3,7 @@ import * as path from 'path';
 import * as url from 'url';
 import * as SerialPort from 'serialport';
 import {PortInfo} from "serialport";
+import { PortMessages } from './src/app/constants';
 
 
 // Initialize remote module
@@ -20,44 +21,53 @@ ipcMain.on('listing', (event, ...args: any[]) => {
   });
 });
 
-ipcMain.on('port', (event, path: string, options: SerialPort.OpenOptions) => {
-  if(activeSerialPort) {
-    if(activeSerialPort.isOpen) {
-      activeSerialPort.close((err) => {
-        if(err) {
-          event.reply('port', 'error', err);
+ipcMain.on('port', (event, msg:PortMessages, ...args: any[]) => {
+
+  switch(msg) {
+    case 'open': {
+      const [path, options]: [string, SerialPort.OpenOptions] = args as any;
+
+      if(activeSerialPort) {
+        if(activeSerialPort.isOpen) {
+          activeSerialPort.close((err) => {
+            if(err) {
+              event.reply('port', 'error', err);
+            } else {
+              event.reply('port', 'close');
+            }
+          });
+        }
+        activeSerialPort = null;
+      }
+
+      console.log("opening port...", path, options);
+      activeSerialPort = new SerialPort(path, options, (error) => {
+        if(error) {
+          event.reply('port', 'error', error);
         } else {
-          event.reply('port', 'close');
+          event.reply('port', 'open');
         }
       });
+
+      activeSerialPort.on('data', (data) => {
+        ipcMain.emit('port', 'data', data);
+      });
+
+      activeSerialPort.on('close', () => {
+        ipcMain.emit('port', 'close');
+      });
+
+      activeSerialPort.on('error', (err) => {
+        ipcMain.emit('port', 'error', err);
+      });
+      
+      break;
     }
-    activeSerialPort = null;
+    case 'send':
+      console.error('not implemented');
+      break;
   }
 
-  console.log("port", path, options);
-  console.log("options");
-  console.log(options);
-  console.log("!");
-  
-  activeSerialPort = new SerialPort(path, options, (error) => {
-    if(error) {
-      event.reply('port', 'error', error);
-    } else {
-      event.reply('port', 'open');
-    }
-  });
-
-  activeSerialPort.on('data', (data) => {
-    ipcMain.emit('port', 'data', data);
-  });
-
-  activeSerialPort.on('close', () => {
-    ipcMain.emit('port', 'close');
-  });
-
-  activeSerialPort.on('error', (err) => {
-    ipcMain.emit('port', 'error', err);
-  });
 });
 
 
