@@ -1,14 +1,22 @@
 <mat-toolbar color="primary">
   <button mat-icon-button (click)="onHome()">
     <mat-icon>home</mat-icon>
-  </button>  
+  </button>
   <span>{{this.path}}</span>
 
-  <span class="fixed-spacer"></span> 
-  <button *ngIf="state === 'disconnected'" mat-raised-button (click)="onConnect()">connect</button>
-  <button *ngIf="state === 'connecting'" mat-button disabled>connecting..</button>
-  <button *ngIf="state === 'connected'" mat-raised-button (click)="onDisconnect()">disconnect</button>
-  <span class="fixed-spacer"></span> 
+  <span class="fixed-spacer"></span>
+  <button *ngIf="state === 'disconnected'" mat-raised-button (click)="onOpenBtn()">Open</button>
+  <button *ngIf="state === 'connecting'" mat-button disabled>Opening...</button>
+  <button *ngIf="state === 'connected'" mat-raised-button (click)="onCloseBtn()">Close</button>
+  <button *ngIf="state === 'disconnecting'" mat-button disabled>Closing...</button>
+
+  <button *ngIf="state === 'connected' && !paused" mat-icon-button mat-raised-button (click)="onPause()">
+    <mat-icon>pause</mat-icon>
+  </button>
+  <button *ngIf="state === 'connected' && paused" mat-icon-button mat-raised-button (click)="onPlay()">
+    <mat-icon>play_arrow</mat-icon>
+  </button>
+  <span class="fixed-spacer"></span>
   <mat-select #baudRateSelect [compareWith]="compareBaudRates" [(ngModel)]="baudRate" class="baud-rate-select">
     <mat-option *ngFor="let baud of baudRates" [value]="baud">
       {{baud}}
@@ -18,11 +26,11 @@
   <mat-icon>refresh</mat-icon>
 </mat-toolbar>
 
-<mat-tab-group>
+<mat-tab-group class="content-page">
   <mat-tab label="text">
-    <pre #serialPortMessages>I am serial #serialPortMessages
-Yay
-    </pre>    
+    <div class="data-container" #scrollMe>
+      <pre>{{stringData}}{{this.paused ? '' : scrollToBottom()}}</pre>
+    </div>
   </mat-tab>
   <mat-tab label="hex"></mat-tab>
   <mat-tab label="graph"></mat-tab>

@@ -1,5 +1,5 @@
 export interface SerialPortWatcher {
-    onSerialData(data: string);
-    onSerialError(err: Error);
-    onSerialClose();
+  onSerialData(data: number[]);
+  onSerialError(err: Error);
+  onSerialClose();
 }

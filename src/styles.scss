@@ -28,3 +28,13 @@ body {
 .spacer {
   flex: 1 1 auto;
 }
+
+::-webkit-scrollbar {
+  width: .8em
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+  background:  white;
+  border-radius: 4px;
+}

@@ -5,3 +5,30 @@
 .baud-rate-select {
     width: 128px;
 }
+
+.content-page {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 64px;
+  bottom: 0;
+/*  background-color: blue;
+  border: 8px solid red;*/
+}
+
+.data-container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  /*scroll-behavior: smooth;
+  background-color: grey;
+  border: 2px solid white;*/
+}
+
+:host ::ng-deep .mat-tab-body-wrapper {
+  height: 100%;
+}
+

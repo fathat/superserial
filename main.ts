@@ -1,8 +1,7 @@
-import { app, BrowserWindow, screen, ipcMain } from 'electron';
+import {app, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 import * as SerialPort from 'serialport';
-import {PortInfo} from "serialport";
 import { PortMessages } from './src/app/constants';
 
 
@@ -46,23 +45,32 @@ ipcMain.on('port', (event, msg:PortMessages, ...args: any[]) => {
           event.reply('port', 'error', error);
         } else {
           event.reply('port', 'open');
+
+          activeSerialPort.on('data', (data) => {
+            //console.log('activeSerialPort - data', data);
+            win.webContents.send('port', 'data', Array.from(data.values()));
+          });
+
+          activeSerialPort.on('close', () => {
+            console.log('activeSerialPort - close');
+            win.webContents.send('port', 'close');
+          });
+
+          activeSerialPort.on('error', (err) => {
+            console.log('activeSerialPort - error', err);
+            win.webContents.send('port', 'error', err);
+          });
+
         }
       });
 
-      activeSerialPort.on('data', (data) => {
-        ipcMain.emit('port', 'data', data);
-      });
-
-      activeSerialPort.on('close', () => {
-        ipcMain.emit('port', 'close');
-      });
-
-      activeSerialPort.on('error', (err) => {
-        ipcMain.emit('port', 'error', err);
-      });
-      
       break;
     }
+    case 'close':
+      activeSerialPort.close(() => {
+        win.webContents.send('port', 'close');
+      });
+      break;
     case 'send':
       console.error('not implemented');
       break;
