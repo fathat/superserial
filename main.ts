@@ -3,10 +3,11 @@ import * as path from 'path';
 import * as url from 'url';
 import * as SerialPort from 'serialport';
 import { PortMessages } from './src/app/constants';
-
+import Readline = SerialPort.parsers.Readline;
 
 // Initialize remote module
 require('@electron/remote/main').initialize();
+
 
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
@@ -48,7 +49,13 @@ ipcMain.on('port', (event, msg:PortMessages, ...args: any[]) => {
 
           activeSerialPort.on('data', (data) => {
             //console.log('activeSerialPort - data', data);
-            win.webContents.send('port', 'data', Array.from(data.values()));
+            win.webContents.send('port-data', Array.from(data.values()));
+          });
+
+          const parser = new Readline({delimiter: '\r\n'});
+          activeSerialPort.pipe(parser);
+          parser.on('data', (buffer: Buffer) => {
+            win.webContents.send('port-text-line', buffer.toString('utf-8'));
           });
 
           activeSerialPort.on('close', () => {
@@ -60,7 +67,6 @@ ipcMain.on('port', (event, msg:PortMessages, ...args: any[]) => {
             console.log('activeSerialPort - error', err);
             win.webContents.send('port', 'error', err);
           });
-
         }
       });
 
@@ -91,6 +97,9 @@ function createWindow(): BrowserWindow {
     y: 0,
     width: size.width,
     height: size.height,
+    titleBarStyle: "hidden",
+    autoHideMenuBar: true,
+    frame: false,
     webPreferences: {
       nodeIntegration: true,
       allowRunningInsecureContent: (serve) ? true : false,
@@ -98,6 +107,8 @@ function createWindow(): BrowserWindow {
       enableRemoteModule : true // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
     },
   });
+
+  win.setMenu(null);
 
   if (serve) {
 
@@ -128,6 +139,8 @@ function createWindow(): BrowserWindow {
 }
 
 try {
+
+
   // This method will be called when Electron has finished
   // initialization and is ready to create browser windows.
   // Some APIs can only be used after this event occurs.

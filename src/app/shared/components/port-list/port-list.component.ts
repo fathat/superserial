@@ -33,14 +33,14 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
   }
 
   displayedColumns = [
-    'path', 
-    'manufacturer', 
-    'pnpId', 
-    'vendorId', 
-    'productId', 
+    'path',
+    'manufacturer',
+    'pnpId',
+    'vendorId',
+    'productId',
     'serialNumber'
   ];
-  
+
   baudRates = baudRates;
   dataBitOptions = dataBitOptions;
   parityOptions = parityOptions;
@@ -71,10 +71,8 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
     );
   }
 
-  onClick(path: string, baud: number): void {
-    this.router.navigateByUrl(`/watch?path=${path}&baud=${baud}`);
-    console.log(path);
-    console.log(baud);
+  async onClick(path: string, baud: number): Promise<boolean> {
+    return this.router.navigateByUrl(`/watch?path=${path}&baud=${baud}`);
   }
 
   ngAfterViewInit(): void {
@@ -88,9 +86,12 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
 
   ngOnChanges(changes: SimpleChanges): void {
     for (const propName in changes) {
+      // noinspection JSUnfilteredForInLoop
       const chng = changes[propName];
       const cur  = JSON.stringify(chng.currentValue);
       const prev = JSON.stringify(chng.previousValue);
+
+      // noinspection JSUnfilteredForInLoop
       console.log(`${propName}: currentValue = ${cur}, previousValue = ${prev}`);
     }
   }

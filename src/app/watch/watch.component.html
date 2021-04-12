@@ -1,19 +1,29 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="background">
   <button mat-icon-button (click)="onHome()">
-    <mat-icon>home</mat-icon>
+    <mat-icon>arrow_back_ios_new</mat-icon>
   </button>
   <span>{{this.path}}</span>
 
   <span class="fixed-spacer"></span>
-  <button *ngIf="state === 'disconnected'" mat-raised-button (click)="onOpenBtn()">Open</button>
-  <button *ngIf="state === 'connecting'" mat-button disabled>Opening...</button>
-  <button *ngIf="state === 'connected'" mat-raised-button (click)="onCloseBtn()">Close</button>
-  <button *ngIf="state === 'disconnecting'" mat-button disabled>Closing...</button>
+  <button *ngIf="state === 'disconnected'" mat-raised-button color="accent" mat-icon-button (click)="onOpenBtn()"><mat-icon>link</mat-icon></button>
+  <button *ngIf="state === 'connecting'" mat-button mat-icon-button disabled>
+    <mat-icon>link_off</mat-icon>
+  </button>
+  <button *ngIf="state === 'connected'" mat-raised-button mat-icon-button color="accent"  (click)="onCloseBtn()">
+    <mat-icon>link_off</mat-icon>
+  </button>
+  <button *ngIf="state === 'disconnecting'" mat-button mat-icon-button disabled>
+    <mat-icon>link_off</mat-icon>
+  </button>
 
-  <button *ngIf="state === 'connected' && !paused" mat-icon-button mat-raised-button (click)="onPause()">
+  <span class="btn-spacer"></span>
+  <button *ngIf="state === 'connected' && paused == false" mat-icon-button color="accent" mat-raised-button (click)="onPause()">
     <mat-icon>pause</mat-icon>
   </button>
-  <button *ngIf="state === 'connected' && paused" mat-icon-button mat-raised-button (click)="onPlay()">
+  <button *ngIf="state === 'connected' && paused == true" mat-icon-button color="accent" mat-raised-button (click)="onPlay()">
+    <mat-icon>play_arrow</mat-icon>
+  </button>
+  <button *ngIf="state !== 'connected'" mat-icon-button mat-raised-button disabled>
     <mat-icon>play_arrow</mat-icon>
   </button>
   <span class="fixed-spacer"></span>
@@ -28,13 +38,29 @@
 
 <mat-tab-group class="content-page">
   <mat-tab label="text">
-    <div class="data-container" #scrollMe>
-      <pre>{{stringData}}{{this.paused ? '' : scrollToBottom()}}</pre>
+    <div class="data-container" #stringView>
+      <p
+        *ngFor="let sd of stringData"
+        [ngClass]="{ 'control-entry': sd.type === 'control','error-entry': sd.type === 'error'}">
+        <span class="timestamp">{{sd.timestamp.toLocaleTimeString()}}</span>
+        {{sd.line}}
+      </p>
+      {{scrollToBottom()}}
     </div>
   </mat-tab>
-  <mat-tab label="hex"></mat-tab>
+  <mat-tab label="hex">
+    <div class="data-container" #hexView>
+      <p
+        *ngFor="let hd of hexData">
+        <span class="timestamp">{{hd.timestamp.toLocaleTimeString()}}</span>
+        <span *ngFor="let num of hd.data" class="hex-number">{{(num < 16 ? '0' : '') + num.toString(16).toUpperCase()}}</span>
+      </p>
+    </div>
+  </mat-tab>
   <mat-tab label="graph"></mat-tab>
-  <mat-tab label="watch"></mat-tab>
+  <mat-tab label="watch">
+    <app-watch-list #varWatch class="data-container"></app-watch-list>
+  </mat-tab>
   <mat-tab label="combined"></mat-tab>
 </mat-tab-group>
 

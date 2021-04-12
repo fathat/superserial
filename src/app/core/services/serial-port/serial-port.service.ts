@@ -10,15 +10,22 @@ import {PortMessages} from "../../../constants";
 export class SerialPortService {
 
   openListener: (event: Electron.IpcRendererEvent, ...args: any[]) => void;
-  listener: (event: Electron.IpcRendererEvent, ...args: any[]) => void;
+
+  controlChannelListener: (event: Electron.IpcRendererEvent, msg: string, ...args: any[]) => void;
+  dataChannelListener: (event: Electron.IpcRendererEvent, data: number[]) => void;
+  textChannelListener: (event: Electron.IpcRendererEvent, line: string) => void;
   watcher: SerialPortWatcher;
 
   constructor(private electronService: ElectronService) { }
 
   async serialPortList(): Promise<PortInfo[]> {
     return new Promise<PortInfo[]>((resolve, reject) => {
-      this.electronService.ipcRenderer.once('listing', (event, ports: PortInfo[]) => {
-        resolve(ports);
+      this.electronService.ipcRenderer.once('listing', (event, ports: PortInfo[], error: Error | null) => {
+        if(error) {
+          reject(error);
+        } else {
+          resolve(ports);
+        }
       });
       this.electronService.ipcRenderer.send('listing');
     });
@@ -54,19 +61,17 @@ export class SerialPortService {
 
   beginClose(): void {
     this.electronService.ipcRenderer.send('port', 'close');
+
+    // immediately stop listening for serial port data (in case we're closing because
+    // we're being flooded.
+    this.electronService.ipcRenderer.removeAllListeners('port-data');
   }
 
   register(): void {
-    this.listener = (event: Electron.IpcRendererEvent, ...args: any[]) => {
-      const msg = args[0] as PortMessages;
-      console.log(args);
+    this.controlChannelListener = (event: Electron.IpcRendererEvent, msg: PortMessages,  ...args: any[]) => {
       switch(msg) {
         case 'open': {
           console.assert('invalid state');
-          break;
-        }
-        case 'data': {
-          this.watcher.onSerialData(args[1]);
           break;
         }
         case 'error': {
@@ -79,11 +84,24 @@ export class SerialPortService {
         }
       }
     };
-    this.electronService.ipcRenderer.on('port', this.listener);
+
+    this.dataChannelListener = (event: Electron.IpcRendererEvent, data: number[]) => {
+      this.watcher.onSerialData(data);
+    };
+
+    this.textChannelListener = (event: Electron.IpcRendererEvent, text: string) => {
+      this.watcher.onSerialTextLine(text);
+    };
+
+    this.electronService.ipcRenderer.on('port', this.controlChannelListener);
+    this.electronService.ipcRenderer.on('port-data', this.dataChannelListener);
+    this.electronService.ipcRenderer.on('port-text-line', this.textChannelListener);
   }
 
   unregister(): void {
     this.electronService.ipcRenderer.removeAllListeners('port');
+    this.electronService.ipcRenderer.removeAllListeners('port-data');
+    this.electronService.ipcRenderer.removeAllListeners('port-text-line');
   }
 
 }

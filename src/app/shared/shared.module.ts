@@ -18,9 +18,11 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatIconModule} from "@angular/material/icon";
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { WatchListComponent } from './components/watch-list/watch-list.component';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective, PortListComponent, PlotlyExampleComponent],
+  declarations: [PageNotFoundComponent, WebviewDirective, PortListComponent, PlotlyExampleComponent, WatchListComponent],
   imports: [
     CommonModule,
     TranslateModule,
@@ -32,6 +34,7 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatMenuModule,
     MatButtonModule,
     MatCheckboxModule,
+    MatSlideToggleModule,
     MatIconModule,
     MatTabsModule
   ],
@@ -45,11 +48,13 @@ import { MatTabsModule } from '@angular/material/tabs';
     MatIconModule,
     MatSelectModule,
     MatTabsModule,
+    MatSlideToggleModule,
     WebviewDirective,
     FormsModule,
     PortListComponent,
     PlotlyComponent,
-    PlotlyExampleComponent
+    PlotlyExampleComponent,
+    WatchListComponent
   ]
 })
 export class SharedModule {

@@ -1,6 +1,9 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="background">
   <span>Serial Ports</span>
+  <span class="fixed-spacer"></span>
+  <mat-slide-toggle [checked]="hideEmpty" [(ngModel)]="hideEmpty">Hide Empty</mat-slide-toggle>
   <span class="spacer"></span>
+
   <!--<mat-checkbox color="accent" [(ngModel)]="hideEmpty">Hide Empty</mat-checkbox>-->
   <button mat-icon-button (click)="onRefresh()">
     <mat-icon>refresh</mat-icon>
@@ -18,7 +21,7 @@
     <ng-container matColumnDef="path">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Path</th>
         <td mat-cell *matCellDef="let sp">
-            <button color="primary" mat-raised-button [matMenuTriggerFor]="serialPortMenu" [matMenuTriggerData]="{path: sp.path}" >{{sp.path}}</button>
+            <button color="accent" mat-raised-button [matMenuTriggerFor]="serialPortMenu" [matMenuTriggerData]="{path: sp.path}" >{{sp.path}}</button>
         </td>
     </ng-container>
     <ng-container matColumnDef="pnpId">

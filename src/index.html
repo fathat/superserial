@@ -7,8 +7,55 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="assets/icons/favicon.ico">
+  <style>
+    .loading {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .loading-text {
+      margin: 0;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  </style>
 </head>
 <body>
-  <app-root>Loading...</app-root>
+  <app-root>
+    <div class="loading">
+      <h1 class="loading-text">[loading]</h1>
+    </div>
+  </app-root>
+  <script>
+    const customTitlebar = require('custom-electron-titlebar');
+    const remote = require('@electron/remote');
+    const Menu = remote.Menu;
+
+    const menu = Menu.buildFromTemplate([
+      {
+        label: "Super Serial",
+        submenu: [
+          {
+            label: "Preferences"
+          }
+        ],
+      }
+    ]);
+
+    //Menu.setApplicationMenu(menu);
+
+    new customTitlebar.Titlebar({
+      drag: true,
+      backgroundColor: customTitlebar.Color.fromHex('#393939'),
+
+    });
+
+
+  </script>
 </body>
 </html>

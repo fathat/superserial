@@ -1,0 +1,36 @@
+.name {
+  font-family: "Fira Code", "Consolas", monospace;
+  color: white;
+  padding: 4px;
+}
+
+.value-string {
+  font-family: "Fira Code", "Consolas", monospace;
+  text-align: left;
+  padding: 4px;
+}
+
+.value-number {
+  font-family: "Fira Code", "Consolas", monospace;
+  color: springgreen;
+  text-align: right;
+  padding: 4px;
+  min-width: 100px;
+}
+
+.timestamp {
+  padding: 4px;
+  font-family: "Fira Code", "Consolas", monospace;
+}
+
+.mat-column-value {
+  text-align: right;
+  justify-content: flex-end;
+}
+
+
+.header-align-right{
+  display: flex;
+  padding: 21px 0;
+  justify-content: flex-end;
+}

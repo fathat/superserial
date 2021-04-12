@@ -2,6 +2,10 @@
     width: 32px;
 }
 
+.btn-spacer {
+  width: 16px;
+}
+
 .baud-rate-select {
     width: 128px;
 }
@@ -18,10 +22,10 @@
 
 .data-container {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: 16px;
+  right: 16px;
   top: 0;
-  bottom: 0;
+  bottom: 24px;
   overflow-y: scroll;
   /*scroll-behavior: smooth;
   background-color: grey;
@@ -32,3 +36,29 @@
   height: 100%;
 }
 
+p {
+  font-family: "Fira Code", Consolas, monospace;
+  line-height: 1.0em;
+  font-size: 14px;
+}
+
+p.control-entry {
+  line-height: 1.4em;
+  color: #4cff93;
+}
+
+p.error-entry {
+  line-height: 1.4em;
+  color: #ff0018;
+}
+
+.timestamp {
+  color: white;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+.hex-number {
+  color: mediumspringgreen;
+  margin-left: 16px;
+}

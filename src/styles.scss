@@ -13,7 +13,7 @@ body {
   bottom: 0;
   left: 0;
   right: 0;
-  color: #6bfba6;
+  color: #63e0ff;
   background: #2c2c2c;
   background-image: url(assets/al-gore-monotone.png);
   background-repeat: no-repeat;
@@ -22,7 +22,7 @@ body {
   background-attachment: fixed;
   background-size: 15%;
   margin: 0px;
-  font-family: Roboto, SansSerif;
+  font-family: Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
 }
 
 .spacer {
@@ -30,11 +30,46 @@ body {
 }
 
 ::-webkit-scrollbar {
-  width: .8em
+  width: .4em;
 }
 
 ::-webkit-scrollbar-thumb:window-inactive,
 ::-webkit-scrollbar-thumb {
-  background:  white;
+  background:  #99ccff;
   border-radius: 4px;
+  width: .4em;
+}
+
+.window-title {
+  color: white;
+  font-weight: bold;
+  /*text-shadow: 0px 0px 4px rgba(#00CCFF, 0.85);*/
+}
+
+.menubar {
+  color: #99ccff;
+  /*text-shadow: 0px 0px 4px rgba(#00CCFF, 0.85);*/
+}
+
+.expand {
+  width: 100%;
+}
+
+.center {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+:not(input):not(textarea),
+:not(input):not(textarea)::after,
+:not(input):not(textarea)::before {
+  -webkit-user-select: none;
+  user-select: none;
+  cursor: default;
+}
+input, button, textarea, :focus {
+  outline: none; // You should add some other style for :focus to help UX/a11y
 }

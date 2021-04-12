@@ -12,28 +12,37 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { baudRates } from '../constants';
 import { SerialPortWatcher } from '../core/services/serial-port/serial-port-watcher';
 import { SerialPortService } from '../core/services/serial-port/serial-port.service';
+import {ConnectionState, HexEntry, LineEntry, LineType} from "../data-model";
+import {WatchListComponent} from "../shared/components/watch-list/watch-list.component";
+import {watch} from "fs";
 
-export type ConnectionState = 'disconnected' | 'connecting' | 'connected' | 'closing';
+const watchDirective = new RegExp(/@w\s+(\S+)\s+(.*)\s*/);
 
 @Component({
   selector: 'app-watch',
   templateUrl: './watch.component.html',
   styleUrls: ['./watch.component.scss']
 })
-export class WatchComponent implements OnInit, AfterContentChecked, SerialPortWatcher, OnDestroy {
+export class WatchComponent implements OnInit, SerialPortWatcher, OnDestroy {
 
   path = "";
   baudRate = 9600;
   baudRates = baudRates;
   state: ConnectionState = 'disconnected';
 
-  stringData = "";
-  pauseData: number[] = [];
+  hexData: HexEntry[] = [];
+  pauseHexData: HexEntry[] = [];
+
+  stringData: LineEntry[] = [];
+  pauseStringData: LineEntry[] = [];
+
   paused = false;
 
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  @ViewChild('stringView') private stringViewElement: ElementRef;
 
   @ViewChild("baudRateSelect") baudRateSelect: MatSelect;
+
+  @ViewChild("varWatch") watchListComponent: WatchListComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,16 +53,32 @@ export class WatchComponent implements OnInit, AfterContentChecked, SerialPortWa
 
   addData(data: number[]): void {
     if(this.paused) {
-      this.pauseData.push(...data);
+      this.pauseHexData.push({data, timestamp: new Date()});
     } else {
-      this.writeViewStringData(data);
+      this.hexData.push({data, timestamp: new Date()});
     }
   }
 
-  writeViewStringData(data: number[]): void {
-    const str = new TextDecoder().decode(Uint8Array.from(data));
-    this.stringData += str;
+  writeViewString(line: string, type: LineType = undefined): void {
+    while(this.stringData.length > 100) {
+      this.stringData.pop();
+    }
+    this.stringData.push({line, timestamp: new Date(), type});
     this.changeDetectorRef.detectChanges();
+  }
+
+  onSerialTextLine(line: string): void {
+    if(line.startsWith('@w') && !this.paused) {
+      const match = watchDirective.exec(line);
+      this.watchListComponent.updateWatch(match[1], match[2]);
+      return;
+    }
+
+    if(this.paused) {
+      this.pauseStringData.push({line, timestamp: new Date()});
+    } else {
+      this.writeViewString(line);
+    }
   }
 
   onSerialData(data: number[]): void {
@@ -62,16 +87,22 @@ export class WatchComponent implements OnInit, AfterContentChecked, SerialPortWa
 
   onSerialError(err: Error): void {
     console.error("data", err);
-    this.stringData += `\r\n\r\n#Error! ${err.message}`;
+    this.writeViewString(`# Error! ${err.message}`, 'error');
     this.state = 'disconnected';
     this.changeDetectorRef.detectChanges();
+
+    // hack - our scroll to bottom code sucks
+    setTimeout(() => this.scrollToBottom(), 500);
   }
 
   onSerialClose(): void {
-    this.stringData += `\r\n\r\n# Serial port closed.`;
+    this.writeViewString(`# Serial port closed.`, 'control');
     this.state = 'disconnected';
     this.serialPortService.unregister();
     this.changeDetectorRef.detectChanges();
+
+    // hack - our scroll to bottom code sucks
+    setTimeout(() => this.scrollToBottom(), 500);
   }
 
   ngOnDestroy(): void {
@@ -83,16 +114,17 @@ export class WatchComponent implements OnInit, AfterContentChecked, SerialPortWa
     this.baudRate = +this.route.snapshot.queryParams['baud'];
   }
 
-  ngAfterContentChecked(): void {
-    this.scrollToBottom();
-  }
-
   public scrollToBottom(): string {
     if (this.paused) {
       return '';
     }
+
+    if(!this.stringViewElement || !this.stringViewElement.nativeElement) {
+      return;
+    }
+
     try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+      this.stringViewElement.nativeElement.scrollTop = this.stringViewElement.nativeElement.scrollHeight;
     } catch(err) {
       console.error('scrollToBottom', err);
     }
@@ -108,22 +140,19 @@ export class WatchComponent implements OnInit, AfterContentChecked, SerialPortWa
       baudRate: this.baudRate
     }, this).then(() => {
       this.state = 'connected';
-      if(this.stringData.length > 0) {
-        this.stringData += `\n\n Serial port open.`;
-      } else {
-        this.stringData = 'Serial port open.\n';
-      }
+      this.writeViewString('# Serial port open.', 'control');
       this.changeDetectorRef.detectChanges();
+
+      // hack - our scroll to bottom code sucks
+      setTimeout(() => this.scrollToBottom(), 500);
     }).catch((error: Error) => {
       console.error(error);
-      if(this.stringData.length > 0) {
-        this.stringData += error.message + '\n';
-      } else {
-        this.stringData += `\n` + error.message + '\n';
-      }
-
+      this.writeViewString(error.message);
       this.state = 'disconnected';
       this.changeDetectorRef.detectChanges();
+
+      // hack - our scroll to bottom code sucks
+      setTimeout(() => this.scrollToBottom(), 500);
     });
   }
 
@@ -134,12 +163,13 @@ export class WatchComponent implements OnInit, AfterContentChecked, SerialPortWa
 
   onPause(): void {
     this.paused = true;
+    this.changeDetectorRef.detectChanges();
   }
 
   onPlay(): void {
     this.paused = false;
-    this.writeViewStringData(this.pauseData);
-    this.pauseData = [];
+    this.stringData.push(...this.pauseStringData);
+    this.pauseStringData = [];
   }
 
   compareBaudRates(o1: number | string, o2: number | string): boolean {
