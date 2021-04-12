@@ -93,10 +93,10 @@ function createWindow(): BrowserWindow {
 
   // Create the browser window.
   win = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: size.width,
-    height: size.height,
+    x: (size.width * 0.125) | 0,
+    y: (size.height * 0.125) | 0,
+    width: (size.width * 0.75) | 0,
+    height: (size.height * 0.75) | 0,
     titleBarStyle: "hidden",
     autoHideMenuBar: true,
     frame: false,
