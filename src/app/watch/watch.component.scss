@@ -1,9 +1,11 @@
 .fixed-spacer {
     width: 32px;
+    -webkit-app-region: drag;
 }
 
 .btn-spacer {
   width: 16px;
+  -webkit-app-region: drag;
 }
 
 .baud-rate-select {

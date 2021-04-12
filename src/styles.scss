@@ -25,8 +25,14 @@ body {
   font-family: Roboto, "Helvetica Neue", "Segoe UI", sans-serif;
 }
 
+.window-draggable {
+  -webkit-app-region: drag;
+}
+
 .spacer {
   flex: 1 1 auto;
+  -webkit-app-region: drag;
+  height: 100%;
 }
 
 ::-webkit-scrollbar {

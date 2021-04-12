@@ -97,6 +97,7 @@ function createWindow(): BrowserWindow {
     y: (size.height * 0.125) | 0,
     width: (size.width * 0.75) | 0,
     height: (size.height * 0.75) | 0,
+    icon: 'src/assets/icons/serial-port.png',
     titleBarStyle: "hidden",
     autoHideMenuBar: true,
     frame: false,

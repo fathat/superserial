@@ -8,8 +8,16 @@ table {
 
 .fixed-spacer {
   width: 32px;
+  height: 100%;
+  -webkit-app-region: drag;
 }
 
 .mat-toolbar {
   font-size: 18px;
+}
+
+.hide-overflow {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 100%;
 }

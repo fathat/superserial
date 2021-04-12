@@ -23,12 +23,12 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
   dataSource = new MatTableDataSource([] as PortInfo[]);
   portInfo: PortInfo[];
 
-  _hideEmpty = false;
-  get hideEmpty(): boolean {
-    return this._hideEmpty;
+  _filtered = true;
+  get filtered(): boolean {
+    return this._filtered;
   }
-  set hideEmpty(on: boolean) {
-    this._hideEmpty = on;
+  set filtered(on: boolean) {
+    this._filtered = on;
     this.onRefresh();
   }
 
@@ -59,7 +59,7 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
   }
 
   getHideEmpty(): boolean {
-    return this.hideEmpty;
+    return this.filtered;
   }
 
   updatePortList(): void {
@@ -80,7 +80,7 @@ export class PortListComponent implements OnInit, OnDestroy, OnChanges, AfterVie
   }
 
   onRefresh(): void {
-    console.log("hide empty", this.hideEmpty);
+    console.log("hide empty", this.filtered);
     this.updatePortList();
   }
 

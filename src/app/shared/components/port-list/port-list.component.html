@@ -1,10 +1,8 @@
 <mat-toolbar color="background">
   <span>Serial Ports</span>
   <span class="fixed-spacer"></span>
-  <mat-slide-toggle [checked]="hideEmpty" [(ngModel)]="hideEmpty">Hide Empty</mat-slide-toggle>
+  <mat-slide-toggle [checked]="filtered" [(ngModel)]="filtered">Filtered</mat-slide-toggle>
   <span class="spacer"></span>
-
-  <!--<mat-checkbox color="accent" [(ngModel)]="hideEmpty">Hide Empty</mat-checkbox>-->
   <button mat-icon-button (click)="onRefresh()">
     <mat-icon>refresh</mat-icon>
   </button>
@@ -26,7 +24,9 @@
     </ng-container>
     <ng-container matColumnDef="pnpId">
         <th mat-header-cell *matHeaderCellDef mat-sort-header>pnpId</th>
-        <td mat-cell *matCellDef="let sp">{{sp.pnpId}}</td>
+        <td mat-cell *matCellDef="let sp">
+            <span class="hide-overflow">{{sp.pnpId}}</span>
+        </td>
     </ng-container>
     <ng-container matColumnDef="manufacturer" >
         <th mat-header-cell *matHeaderCellDef mat-sort-header>Manufacturer</th>

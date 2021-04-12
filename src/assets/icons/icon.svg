@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="256"
+   height="256"
+   viewBox="0 0 67.733332 67.733335"
+   version="1.1"
+   id="svg8"
+   inkscape:export-filename="/home/iovergard/scratch/superserial/src/assets/icons/serial-port.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="icon.svg">
+  <defs
+     id="defs2">
+    <rect
+       x="6.3933843"
+       y="9.0338985"
+       width="68.708784"
+       height="69.219296"
+       id="rect885" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 33.866667 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="67.733332 : 33.866667 : 1"
+       inkscape:persp3d-origin="33.866666 : 22.577778 : 1"
+       id="perspective12" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.979899"
+     inkscape:cx="131.3547"
+     inkscape:cy="172.34676"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     units="px"
+     showguides="true"
+     inkscape:window-width="1515"
+     inkscape:window-height="1208"
+     inkscape:window-x="852"
+     inkscape:window-y="29"
+     inkscape:window-maximized="0"
+     inkscape:guide-bbox="true">
+    <inkscape:grid
+       type="xygrid"
+       id="grid42" />
+    <sodipodi:guide
+       position="0,67.733334"
+       orientation="0,256"
+       id="guide50" />
+    <sodipodi:guide
+       position="67.733334,67.733334"
+       orientation="256,0"
+       id="guide52" />
+    <sodipodi:guide
+       position="67.733334,0"
+       orientation="0,-256"
+       id="guide54" />
+    <sodipodi:guide
+       position="0,0"
+       orientation="-256,0"
+       id="guide56" />
+    <sodipodi:guide
+       position="73.641205,53.747889"
+       orientation="0,-1"
+       id="guide1111" />
+    <sodipodi:guide
+       position="14.432554,67.733336"
+       orientation="1,0"
+       id="guide1113" />
+    <sodipodi:guide
+       position="53.186635,67.733336"
+       orientation="1,0"
+       id="guide1115" />
+    <sodipodi:guide
+       position="0,13.878524"
+       orientation="0,-1"
+       id="guide1117" />
+  </sodipodi:namedview>
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <rect
+       style="fill:#264a7a;fill-rule:evenodd;stroke-width:0.264583;fill-opacity:1"
+       id="rect58"
+       width="67.73333"
+       height="67.73333"
+       x="0"
+       y="-5e-07"
+       rx="15.99999"
+       ry="15.99999" />
+    <text
+       xml:space="preserve"
+       id="text883"
+       style="font-style:normal;font-weight:normal;font-size:22.5778px;line-height:0;font-family:sans-serif;white-space:pre;shape-inside:url(#rect885);fill:#5eb4e0;fill-opacity:1;stroke:none;"
+       transform="translate(0.48067409,-1.2873438)"
+       x="0"
+       y="0"><tspan
+         x="6.3925781"
+         y="29.009265"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;line-height:1.25;font-family:monospace;-inkscape-font-specification:monospace;text-align:justify;text-anchor:start;fill:#5eb4e0;fill-opacity:1">0101
+</tspan></tspan><tspan
+         x="6.3925781"
+         y="57.231517"><tspan
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:22.5778px;line-height:1.25;font-family:monospace;-inkscape-font-specification:monospace;text-align:justify;text-anchor:start;fill:#5eb4e0;fill-opacity:1">0011
+</tspan></tspan></text>
+  </g>
+</svg>
