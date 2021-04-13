@@ -23,7 +23,9 @@
               "src/theme.scss",
               "src/styles.scss"
             ],
-            "scripts": [],
+            "scripts": [
+              "node_modules/apexcharts/dist/apexcharts.min.js"
+            ],
             "customWebpackConfig": {
               "path": "./angular.webpack.js"
             }
@@ -81,6 +83,9 @@
         },
         "serve": {
           "builder": "@angular-builders/custom-webpack:dev-server",
+          "scripts": [
+            "node_modules/apexcharts/dist/apexcharts.min.js"
+          ],
           "options": {
             "browserTarget": "angular-electron:build"
           },

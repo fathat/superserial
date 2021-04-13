@@ -1,6 +1,4 @@
 import {
-  AfterContentChecked,
-  AfterViewChecked, AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef, OnDestroy,
@@ -14,9 +12,11 @@ import { SerialPortWatcher } from '../core/services/serial-port/serial-port-watc
 import { SerialPortService } from '../core/services/serial-port/serial-port.service';
 import {ConnectionState, HexEntry, LineEntry, LineType} from "../data-model";
 import {WatchListComponent} from "../shared/components/watch-list/watch-list.component";
-import {watch} from "fs";
+import { VarGraphComponent } from '../shared/components/var-graph/var-graph.component';
 
-const watchDirective = new RegExp(/@w\s+(\S+)\s+(.*)\s*/);
+const updateWatchRegex = new RegExp(/@w\s+(\S+)\s+(.*)\s*/);
+const updateGraphRegex = new RegExp(/@g\s+(\S+)\s+(.*)\s*/);
+
 
 @Component({
   selector: 'app-watch',
@@ -44,6 +44,8 @@ export class WatchComponent implements OnInit, SerialPortWatcher, OnDestroy {
 
   @ViewChild("varWatch") watchListComponent: WatchListComponent;
 
+  @ViewChild("varGraph") graphComponent: VarGraphComponent;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -69,8 +71,21 @@ export class WatchComponent implements OnInit, SerialPortWatcher, OnDestroy {
 
   onSerialTextLine(line: string): void {
     if(line.startsWith('@w') && !this.paused) {
-      const match = watchDirective.exec(line);
+      const match = updateWatchRegex.exec(line);
       this.watchListComponent.updateWatch(match[1], match[2]);
+      return;
+    }
+
+    if(line.startsWith('@g') && !this.paused) {
+      const match = updateGraphRegex.exec(line);
+
+      if(!match) {
+        console.log("bad g " + line);
+      }else {
+        console.log(match[2], Number(match[2]));
+        this.graphComponent.updateSeries(match[1], Number(match[2].trim()));
+      }
+      
       return;
     }
 

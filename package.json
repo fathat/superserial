@@ -47,7 +47,9 @@
     "@angular/material": "11.2.7",
     "@electron/remote": "1.0.4",
     "angular-plotly.js": "3.1.0",
+    "apexcharts": "3.26.0",
     "custom-electron-titlebar": "3.2.6",
+    "ng-apexcharts": "1.5.9",
     "plotly.js": "1.58.4",
     "serialport": "9.0.7"
   },

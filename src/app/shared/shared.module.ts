@@ -7,7 +7,6 @@ import {PageNotFoundComponent} from './components/';
 import {WebviewDirective} from './directives/';
 import {FormsModule} from '@angular/forms';
 import {PortListComponent} from './components/port-list/port-list.component';
-import {PlotlyExampleComponent} from './components/plotly-example/plotly-example.component';
 import {PlotlyComponent, PlotlyModule} from 'angular-plotly.js';
 import {MatButtonModule} from '@angular/material/button';
 import {MatMenuModule} from '@angular/material/menu';
@@ -20,9 +19,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { WatchListComponent } from './components/watch-list/watch-list.component';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { VarGraphComponent } from './components/var-graph/var-graph.component';
+import {NgApexchartsModule} from "ng-apexcharts";
 
 @NgModule({
-  declarations: [PageNotFoundComponent, WebviewDirective, PortListComponent, PlotlyExampleComponent, WatchListComponent],
+  declarations: [PageNotFoundComponent, WebviewDirective, PortListComponent, WatchListComponent, VarGraphComponent],
   imports: [
     CommonModule,
     TranslateModule,
@@ -36,7 +37,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     MatCheckboxModule,
     MatSlideToggleModule,
     MatIconModule,
-    MatTabsModule
+    MatTabsModule,
+    NgApexchartsModule
   ],
   exports: [
     TranslateModule,
@@ -53,8 +55,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     FormsModule,
     PortListComponent,
     PlotlyComponent,
-    PlotlyExampleComponent,
-    WatchListComponent
+    WatchListComponent,
+    VarGraphComponent
   ]
 })
 export class SharedModule {
