@@ -49,6 +49,7 @@
     "angular-plotly.js": "3.1.0",
     "apexcharts": "3.26.0",
     "custom-electron-titlebar": "3.2.6",
+    "lodash": "4.17.21",
     "ng-apexcharts": "1.5.9",
     "plotly.js": "1.58.4",
     "serialport": "9.0.7"

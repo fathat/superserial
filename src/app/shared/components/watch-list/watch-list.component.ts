@@ -1,3 +1,4 @@
+import { ChangeDetectorRef } from '@angular/core';
 import {AfterViewInit, Component, OnInit, ViewChild} from '@angular/core';
 import {MatSort} from "@angular/material/sort";
 import {MatTableDataSource} from "@angular/material/table";
@@ -31,7 +32,7 @@ export class WatchListComponent implements OnInit, AfterViewInit {
   watches: WatchVar[] = [];
   dataSource = new MatTableDataSource(this.watches);
 
-  constructor() { }
+  constructor(private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
 
@@ -62,5 +63,6 @@ export class WatchListComponent implements OnInit, AfterViewInit {
     }
 
     this.dataSource.data = this.watches;
+    this.changeDetectorRef.detectChanges();
   }
 }

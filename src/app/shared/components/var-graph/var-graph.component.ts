@@ -6,7 +6,7 @@ import {
 } from "ng-apexcharts";
 
 const xAxisRange = 10 * 1000; // 10 seconds
-const interval = 500;
+const interval = 250;
 
 interface SeriesData {
   name: string;
@@ -22,7 +22,9 @@ export class VarGraphComponent implements OnInit {
   @ViewChild("chart") chart: ChartComponent;
   public chartOptions: Partial<ChartComponent>;
 
-  graphStart = Date.now();
+  graphStart = Math.round(Date.now() / 1000) * 1000;
+
+  updates: number = 0;
 
   constructor() {
 
@@ -32,10 +34,10 @@ export class VarGraphComponent implements OnInit {
         width: "100%",
         type: 'line',
         animations: {
-          enabled: true,
+          enabled: false,
           easing: 'linear',
           dynamicAnimation: {
-            speed: 500
+            speed: 1000
           }
         },
         zoom: {
@@ -61,17 +63,16 @@ export class VarGraphComponent implements OnInit {
       xaxis: {
         type: 'datetime',
         range: xAxisRange,
-        tickAmount: 20,
+        tickAmount: 10,
         labels: {
           formatter: (value, timestamp, options) => {
-            return `${(+value - this.graphStart)}ms`;
+            return `${(((+value - this.graphStart)) / 1000).toFixed(1)}s`;
           }
         }
       }
     };
   }
 
-  //data = [[Date.now(), 0]]; 
   series: SeriesData[] = [];
 
   generateSeries() {
@@ -79,18 +80,7 @@ export class VarGraphComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    /*setInterval(() => {
-      const now = Date.now();
-      this.data.push([now, ((Math.sin(now / 1000.0) + Math.random() * 0.25) * 20 + 50) | 0]);
 
-      //cull anything older than 20 seconds
-      //this.data = this.data.filter((dat) => (now - dat[0]) < 20000);
-
-      this.chart.updateSeries([{
-        data: (this.data as any)
-        
-      }]);
-    }, interval);*/
   }
 
   public updateSeries(name: string, val: number) {
@@ -105,8 +95,7 @@ export class VarGraphComponent implements OnInit {
       });
     }
 
-    console.log("series", this.series);
-    this.chart.updateSeries(this.series, true);
+    this.chart.updateSeries(this.series);
   }
 
 }

@@ -80,9 +80,8 @@ export class WatchComponent implements OnInit, SerialPortWatcher, OnDestroy {
       const match = updateGraphRegex.exec(line);
 
       if(!match) {
-        console.log("bad g " + line);
+        console.error("bad g " + line);
       }else {
-        console.log(match[2], Number(match[2]));
         this.graphComponent.updateSeries(match[1], Number(match[2].trim()));
       }
       
