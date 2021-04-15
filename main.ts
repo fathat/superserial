@@ -1,90 +1,14 @@
 import {app, BrowserWindow, screen, ipcMain } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
-import * as SerialPort from 'serialport';
-import { PortMessages } from './src/app/constants';
-import Readline = SerialPort.parsers.Readline;
+import { listingHandler, makePortHandler } from './ipc';
 
 // Initialize remote module
 require('@electron/remote/main').initialize();
 
-
 let win: BrowserWindow = null;
 const args = process.argv.slice(1),
   serve = args.some(val => val === '--serve');
-
-let activeSerialPort: SerialPort | null = null;
-
-ipcMain.on('listing', (event, ...args: any[]) => {
-  SerialPort.list().then((portInfo: SerialPort.PortInfo[]) => {
-    event.reply('listing', portInfo);
-  });
-});
-
-ipcMain.on('port', (event, msg:PortMessages, ...args: any[]) => {
-
-  switch(msg) {
-    case 'open': {
-      const [path, options]: [string, SerialPort.OpenOptions] = args as any;
-
-      if(activeSerialPort) {
-        if(activeSerialPort.isOpen) {
-          activeSerialPort.close((err) => {
-            if(err) {
-              event.reply('port', 'error', err);
-            } else {
-              event.reply('port', 'close');
-            }
-          });
-        }
-        activeSerialPort = null;
-      }
-
-      console.log("opening port...", path, options);
-      activeSerialPort = new SerialPort(path, options, (error) => {
-        if(error) {
-          event.reply('port', 'error', error);
-        } else {
-          event.reply('port', 'open');
-
-          activeSerialPort.on('data', (data) => {
-            //console.log('activeSerialPort - data', data);
-            win.webContents.send('port-data', Array.from(data.values()));
-          });
-
-          const parser = new Readline({delimiter: '\r\n'});
-          activeSerialPort.pipe(parser);
-          parser.on('data', (buffer: Buffer) => {
-            win.webContents.send('port-text-line', buffer.toString('utf-8'));
-          });
-
-          activeSerialPort.on('close', () => {
-            console.log('activeSerialPort - close');
-            win.webContents.send('port', 'close');
-          });
-
-          activeSerialPort.on('error', (err) => {
-            console.log('activeSerialPort - error', err);
-            win.webContents.send('port', 'error', err);
-          });
-        }
-      });
-
-      break;
-    }
-    case 'close':
-      activeSerialPort.close(() => {
-        win.webContents.send('port', 'close');
-      });
-      break;
-    case 'send':
-      console.error('not implemented');
-      break;
-  }
-
-});
-
-
 
 function createWindow(): BrowserWindow {
 
@@ -108,6 +32,9 @@ function createWindow(): BrowserWindow {
       enableRemoteModule : true // true if you want to run 2e2 test  with Spectron or use remote module in renderer context (ie. Angular)
     },
   });
+
+  ipcMain.on('listing', listingHandler);
+  ipcMain.on('port', makePortHandler(win));
 
   win.setMenu(null);
 

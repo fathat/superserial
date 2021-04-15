@@ -72,7 +72,12 @@ export class WatchComponent implements OnInit, SerialPortWatcher, OnDestroy {
   onSerialTextLine(line: string): void {
     if(line.startsWith('@w') && !this.paused) {
       const match = updateWatchRegex.exec(line);
-      this.watchListComponent.updateWatch(match[1], match[2]);
+      if(!match) {
+        this.serialPortService.sendString(`Error, did not understand: ${line}\r\n`);
+      } else {
+        this.watchListComponent.updateWatch(match[1], match[2]);
+      }
+      
       return;
     }
 
@@ -80,8 +85,8 @@ export class WatchComponent implements OnInit, SerialPortWatcher, OnDestroy {
       const match = updateGraphRegex.exec(line);
 
       if(!match) {
-        console.error("bad g " + line);
-      }else {
+        this.serialPortService.sendString(`Error, did not understand: ${line}\r\n`);
+      } else {
         this.graphComponent.updateSeries(match[1], Number(match[2].trim()));
       }
       
