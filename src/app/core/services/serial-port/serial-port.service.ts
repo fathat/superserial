@@ -30,6 +30,10 @@ export class SerialPortService {
       this.electronService.ipcRenderer.send('listing');
     });
   }
+  
+  sendString(str: string) {
+    this.electronService.ipcRenderer.send('port', 'send', str);
+  }
 
   beginOpen(path: string, options: OpenOptions, watcher: SerialPortWatcher): Promise<Error | null> {
     console.log("connecting... ", path, options);
