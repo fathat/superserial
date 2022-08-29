@@ -63,7 +63,7 @@ export class WatchComponent implements OnInit, SerialPortWatcher, OnDestroy {
 
   writeViewString(line: string, type: LineType = undefined): void {
     while(this.stringData.length > 100) {
-      this.stringData.pop();
+      this.stringData.shift();
     }
     this.stringData.push({line, timestamp: new Date(), type});
     this.changeDetectorRef.detectChanges();
